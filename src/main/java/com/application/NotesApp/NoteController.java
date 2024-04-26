@@ -1,52 +1,40 @@
 package com.application.NotesApp;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @RestController
-@SpringBootApplication
-@RequestMapping("/notes")
+@RequestMapping("/api/notes")
 public class NoteController {
-    public static void main(String[] args) {
-        SpringApplication.run(NoteController.class, args);
-    }
-
 
     @Autowired
-    private NoteService noteService;
+    private NoteRepository NoteRepository;
+
+    @GetMapping
+    public List<Note> getAllNotes() {
+        return NoteRepository.findAll();
+    }
 
     @PostMapping
-    public ResponseEntity<Note> createNote(@RequestBody Note note) {
-        Note createdNote = noteService.createNote(note);
-        return ResponseEntity.ok(createdNote);
+    public Note createNote(@RequestBody Note note) {
+        return NoteRepository.save(note);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Note> editNote(@PathVariable Long id, @RequestBody Note updatedNote) {
-        Note editedNote = null;
-        try {
-            editedNote = noteService.editNote(id, updatedNote);
-        } catch (ChangeSetPersister.NotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        return ResponseEntity.ok(editedNote);
+    public Note updateNote(@PathVariable Long id, @RequestBody Note updatedNote) {
+        Note note = NoteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Note not found"));
+        note.setTitle(updatedNote.getTitle());
+        note.setContent(updatedNote.getContent());
+        note.setCategory(updatedNote.getCategory());
+        return NoteRepository.save(note);
     }
 
-    @GetMapping("/category/{categoryId}")
-    public List<Note> getAllNotesByCategory(@PathVariable Long categoryId) {
-        try {
-            return noteService.getAllNotesByCategory(categoryId);
-        } catch (ChangeSetPersister.NotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    @GetMapping("/category/{category}")
+    public List<Note> getNotesByCategory(@PathVariable String category) {
+        return NoteRepository.findByCategory(category);
     }
-
-    // Другие методы для работы с записками
-
 }
+
