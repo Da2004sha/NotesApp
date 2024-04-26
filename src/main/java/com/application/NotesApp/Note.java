@@ -16,26 +16,16 @@ public class Note {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    // Конструктор без параметров
     public Note() {
     }
 
-    // Конструктор с параметрами
     public Note(String title, String content, Category category) {
         this.title = title;
         this.content = content;
         this.category = category;
     }
 
-    // Геттеры и сеттеры
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    // геттеры и сеттеры
     public String getTitle() {
         return title;
     }

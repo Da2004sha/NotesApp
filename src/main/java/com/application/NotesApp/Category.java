@@ -20,6 +20,12 @@ public class Category {
 
     }
 
-    // геттеры и сеттеры
+    public Category() {
+    }
+
+    public Category(String name) {
+        this.name = name;
+    }
+
 
 }

@@ -31,7 +31,10 @@ public class NoteService {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ChangeSetPersister.NotFoundException());
         return category.getNotes();
     }
-
-    // Другие методы, например, сортировка записок по категориям и т. д.
+    @Autowired
+    public NoteService(NoteRepository noteRepository, CategoryRepository categoryRepository) {
+        this.noteRepository = noteRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
 }
