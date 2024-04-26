@@ -1,52 +1,52 @@
 package com.application.NotesApp;
-
-import jakarta.persistence.*;
-
-@Entity
 public class Note {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String title;
     private String content;
+    private Long categoryId;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
+    // Constructors
     public Note() {
     }
 
-    public Note(String title, String content, Category category) {
+    public Note(Long id, String title, String content, Long categoryId) {
+        this.id = id;
         this.title = title;
         this.content = content;
-        this.category = category;
+        this.categoryId = categoryId;
     }
 
-    // геттеры и сеттеры
+    // Getters
+    public Long getId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
         return content;
     }
 
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    // Setters
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public void setContent(String content) {
         this.content = content;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }
